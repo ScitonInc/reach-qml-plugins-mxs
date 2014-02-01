@@ -1,6 +1,6 @@
 #include "beeper.h"
 
-#include <qdebug.h>
+#include <QDebug>
 
 Beeper::Beeper(QObject *parent) : QObject(parent)
     ,m_beeper_file(BEEPER)

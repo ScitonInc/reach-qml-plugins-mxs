@@ -1,9 +1,9 @@
 #ifndef BEEPER_H
 #define BEEPER_H
 
-#include <qobject.h>
-#include <qfile.h>
-#include <qtextstream.h>
+#include <QObject>
+#include <QFile>
+#include <QTextStream>
 
 #define BEEPER "/sys/kernel/beeper/beep"
 #define VOLUME "/sys/kernel/beeper/vol"
