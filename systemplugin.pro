@@ -9,10 +9,12 @@
  HEADERS += beeper.h \
             systemplugin.h \
             backlight.h \
-            network.h
+            network.h \
+            system.h
 
  SOURCES += beeper.cpp \
             systemplugin.cpp \
             backlight.cpp \
-            network.cpp
+            network.cpp \
+            system.cpp
 
