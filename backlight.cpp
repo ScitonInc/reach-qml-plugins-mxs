@@ -39,7 +39,7 @@ int Backlight::brightness()
     return s.toInt();
 }
 
-void Backlight::enableBacklight()
+void Backlight::enable()
 {
     m_backlight_file.open(QIODevice::ReadWrite);
     QTextStream out(&m_backlight_file);
@@ -47,7 +47,7 @@ void Backlight::enableBacklight()
     m_backlight_file.close();
 }
 
-void Backlight::disableBacklight()
+void Backlight::disable()
 {
     m_backlight_file.open(QIODevice::ReadWrite);
     QTextStream out(&m_backlight_file);

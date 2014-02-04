@@ -18,8 +18,8 @@ public:
 
     Q_INVOKABLE int brightness(void);
     Q_INVOKABLE void setBrightness(int duration);
-    Q_INVOKABLE void enableBacklight(void);
-    Q_INVOKABLE void disableBacklight(void);
+    Q_INVOKABLE void enable(void);
+    Q_INVOKABLE void disable(void);
 
 private:
     QFile m_brightness_file;
