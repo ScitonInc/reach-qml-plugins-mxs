@@ -80,3 +80,21 @@ QString System::execute(QString command, QStringList args)
    return QString::fromLatin1(data.data());
     
 }
+
+QString System::execute(QString command)
+{
+    QProcess p(this);
+    p.setProcessChannelMode(QProcess::MergedChannels);
+
+    qDebug() << "executing " << command << "\n";
+
+    p.start(command);
+
+    QByteArray data;
+
+    while(p.waitForReadyRead())
+        data.append(p.readAll());
+
+    return QString::fromLatin1(data.data());
+
+}

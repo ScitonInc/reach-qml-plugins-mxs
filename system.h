@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE bool setDate(int year, int month, int day);
     Q_INVOKABLE bool setTime(int hour, int minutes, int seconds);
     Q_INVOKABLE QString execute(QString command, QStringList args);
+    Q_INVOKABLE QString execute(QString command);
 
 private:
 };
