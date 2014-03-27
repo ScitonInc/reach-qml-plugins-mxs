@@ -241,9 +241,31 @@ public slots:
     void drawImage(const QVariant &var, qreal dx, qreal dy, qreal dw, qreal dh);
 
     void moveCanvasImage(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy);
+
     void drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
                                         QString bgColor, qreal x, qreal y, qreal w, qreal h,
-                                        QString lineColor, qreal lineWidth, qreal x1, qreal y1, qreal x2, qreal y2, bool drawBlock);
+                                        QString lineColor, qreal lineWidth, qreal x1, qreal y1, qreal x2, qreal y2,
+                                        bool drawBlock);
+
+    void drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                        QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                        QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                        QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                        bool drawBlock);
+    void drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                        QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                        QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                        QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                        QString lineColor3, qreal x31, qreal y31, qreal x32, qreal y32,
+                                        bool drawBlock);
+    void drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                        QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                        QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                        QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                        QString lineColor3, qreal x31, qreal y31, qreal x32, qreal y32,
+                                        QString lineColor4, qreal x41, qreal y41, qreal x42, qreal y42,
+                                        bool drawBlock);
+
     // pixel manipulation
     QVariantList getImageData(qreal sx, qreal sy, qreal sw, qreal sh);
     void putImageData(QVariantList image, qreal dx, qreal dy);

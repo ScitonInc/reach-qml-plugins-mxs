@@ -647,7 +647,7 @@ void Context2D::fillRect(qreal x, qreal y, qreal w, qreal h)
 
 int Context2D::baseLineOffset(Context2D::TextBaseLine value, const QFontMetrics &metrics)
 {
-    int offset;
+    int offset = 0;
     switch(value) {
     case Context2D::Top:
         break;
@@ -976,16 +976,25 @@ void Context2D::moveCanvasImage(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx
 
 void Context2D::drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
                                     QString bgColor, qreal x, qreal y, qreal w, qreal h,
-                                    QString lineColor, qreal lineWidth, qreal x1, qreal y1, qreal x2, qreal y2, bool drawBlock)
+                                    QString lineColor, qreal lineWidth, qreal x1, qreal y1, qreal x2, qreal y2,
+                                    bool drawBlock)
 {
     QImage image = m_pixmap.copy(0, 0, m_pixmap.width(), m_pixmap.height()).toImage();
     QImage copy = image.copy(sx, sy, sw, sh);
+
     beginPainting();
     m_painter.save();
     m_painter.setMatrix(m_state.matrix, false);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(dx, dy, sw, sh);
+
     m_painter.drawImage(QPoint(dx, dy), copy);
 
-    m_painter.fillRect(QRectF(x,y,w,h), QColor(bgColor));
+    if (bgColor.toLower() == "transparent")
+        clearRect(x,y,w,h);
+    else
+        m_painter.fillRect(QRectF(x,y,w,h), QColor(bgColor));
 
     QPen p;
     p.setWidth(lineWidth);
@@ -998,6 +1007,190 @@ void Context2D::drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal d
     }
     else
         m_painter.drawLine(QPoint(x1,y1), QPoint(x2,y2));
+
+    m_painter.restore();
+    scheduleChange();
+}
+
+
+void Context2D::drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                    QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                    QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                    QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                    bool drawBlock)
+{
+    QImage image = m_pixmap.copy(0, 0, m_pixmap.width(), m_pixmap.height()).toImage();
+    QImage copy = image.copy(sx, sy, sw, sh);
+    beginPainting();
+    m_painter.save();
+    m_painter.setMatrix(m_state.matrix, false);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(dx, dy, sw, sh);
+
+    m_painter.drawImage(QPoint(dx, dy), copy);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(x,y,w,h);
+    else
+        m_painter.fillRect(QRectF(x,y,w,h), QColor(bgColor));
+
+    QPen p;
+    p.setWidth(lineWidth);
+    p.setColor(QColor(lineColor1));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x11,y11), QPoint(x11,y12));
+         m_painter.drawLine(QPoint(x11,y12), QPoint(x12,y12));
+    }
+    else
+        m_painter.drawLine(QPoint(x11,y11), QPoint(x12,y12));
+
+
+    p.setColor(QColor(lineColor2));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x21,y21), QPoint(x21,y22));
+         m_painter.drawLine(QPoint(x21,y22), QPoint(x22,y22));
+    }
+    else
+        m_painter.drawLine(QPoint(x21,y21), QPoint(x22,y22));
+
+    m_painter.restore();
+    scheduleChange();
+}
+
+
+void Context2D::drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                    QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                    QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                    QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                    QString lineColor3, qreal x31, qreal y31, qreal x32, qreal y32,
+                                    bool drawBlock)
+{
+    QImage image = m_pixmap.copy(0, 0, m_pixmap.width(), m_pixmap.height()).toImage();
+    QImage copy = image.copy(sx, sy, sw, sh);
+    beginPainting();
+    m_painter.save();
+    m_painter.setMatrix(m_state.matrix, false);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(dx, dy, sw, sh);
+
+    m_painter.drawImage(QPoint(dx, dy), copy);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(x,y,w,h);
+    else
+        m_painter.fillRect(QRectF(x,y,w,h), QColor(bgColor));
+
+    QPen p;
+    p.setWidth(lineWidth);
+    p.setColor(QColor(lineColor1));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x11,y11), QPoint(x11,y12));
+         m_painter.drawLine(QPoint(x11,y12), QPoint(x12,y12));
+    }
+    else
+        m_painter.drawLine(QPoint(x11,y11), QPoint(x12,y12));
+
+
+    p.setColor(QColor(lineColor2));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x21,y21), QPoint(x21,y22));
+         m_painter.drawLine(QPoint(x21,y22), QPoint(x22,y22));
+    }
+    else
+        m_painter.drawLine(QPoint(x21,y21), QPoint(x22,y22));
+
+    p.setColor(QColor(lineColor3));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x31,y31), QPoint(x31,y32));
+         m_painter.drawLine(QPoint(x31,y32), QPoint(x32,y32));
+    }
+    else
+        m_painter.drawLine(QPoint(x31,y31), QPoint(x32,y32));
+
+
+    m_painter.restore();
+    scheduleChange();
+}
+
+
+void Context2D::drawWaveFormLine(qreal sx, qreal sy, qreal sw, qreal sh, qreal dx, qreal dy,
+                                    QString bgColor, qreal x, qreal y, qreal w, qreal h, qreal lineWidth,
+                                    QString lineColor1, qreal x11, qreal y11, qreal x12, qreal y12,
+                                    QString lineColor2, qreal x21, qreal y21, qreal x22, qreal y22,
+                                    QString lineColor3, qreal x31, qreal y31, qreal x32, qreal y32,
+                                    QString lineColor4, qreal x41, qreal y41, qreal x42, qreal y42,
+                                    bool drawBlock)
+{
+    QImage image = m_pixmap.copy(0, 0, m_pixmap.width(), m_pixmap.height()).toImage();
+    QImage copy = image.copy(sx, sy, sw, sh);
+    beginPainting();
+    m_painter.save();
+    m_painter.setMatrix(m_state.matrix, false);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(dx, dy, sw, sh);
+
+    m_painter.drawImage(QPoint(dx, dy), copy);
+
+    if (bgColor.toLower() == "transparent")
+        clearRect(x,y,w,h);
+    else
+        m_painter.fillRect(QRectF(x,y,w,h), QColor(bgColor));
+
+    QPen p;
+    p.setWidth(lineWidth);
+    p.setColor(QColor(lineColor1));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x11,y11), QPoint(x11,y12));
+         m_painter.drawLine(QPoint(x11,y12), QPoint(x12,y12));
+    }
+    else
+        m_painter.drawLine(QPoint(x11,y11), QPoint(x12,y12));
+
+
+    p.setColor(QColor(lineColor2));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x21,y21), QPoint(x21,y22));
+         m_painter.drawLine(QPoint(x21,y22), QPoint(x22,y22));
+    }
+    else
+        m_painter.drawLine(QPoint(x21,y21), QPoint(x22,y22));
+
+    p.setColor(QColor(lineColor3));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x31,y31), QPoint(x31,y32));
+         m_painter.drawLine(QPoint(x31,y32), QPoint(x32,y32));
+    }
+    else
+        m_painter.drawLine(QPoint(x31,y31), QPoint(x32,y32));
+
+    p.setColor(QColor(lineColor4));
+    m_painter.setPen(p);
+    if (drawBlock)
+    {
+         m_painter.drawLine(QPoint(x41,y41), QPoint(x41,y42));
+         m_painter.drawLine(QPoint(x41,y42), QPoint(x42,y42));
+    }
+    else
+        m_painter.drawLine(QPoint(x41,y41), QPoint(x42,y42));
 
     m_painter.restore();
     scheduleChange();
