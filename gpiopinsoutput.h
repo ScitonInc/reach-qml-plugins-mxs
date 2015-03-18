@@ -3,6 +3,7 @@
 
 #include <QDeclarativeItem>
 #include <linux/types.h>
+#include <QDebug>
 
 class GPIOPinsOutput : public QDeclarativeItem
 {
@@ -12,6 +13,8 @@ public:
     explicit GPIOPinsOutput(QDeclarativeItem *parent = 0);
     ~GPIOPinsOutput();
     Q_INVOKABLE int writeToPins(int val);
+    Q_INVOKABLE int readPins();
+
     
 signals:
     

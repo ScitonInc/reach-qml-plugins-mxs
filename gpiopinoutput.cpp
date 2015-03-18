@@ -30,6 +30,14 @@ int GPIOPinOutput::writeToPin(int val){
     return r;
 }
 
+int GPIOPinOutput::readPin(){
+    __s32 r;
+    int rval = gpio_config_pin(I2C_GPIO_ADDR, m_pin, 1);
+    r=gpio_rd_reg(I2C_GPIO_ADDR, REG_CONFIG);
+    r = gpio_rd_reg_bit(I2C_GPIO_ADDR, REG_INPUT, m_pin);
+    return r;
+}
+
 GPIOPinOutput::~GPIOPinOutput()
 {
 }
