@@ -110,6 +110,26 @@ QString System::execute(QString command)
     qDebug() << "executing " << command << "\n";
 
     p.start(command);
+    QByteArray data;
+
+    while(p.waitForReadyRead())
+        data.append(p.readAll());
+
+    return QString::fromLatin1(data.data());    
+}
+
+QString System::shell(QString command)
+{
+    QProcess p(this);
+    QStringList args;
+
+    args << "-c" << command;
+
+    p.setProcessChannelMode(QProcess::MergedChannels);
+
+    qDebug() << "executing sh " << args << "\n";
+
+    p.start("sh", args);
 
     QByteArray data;
 

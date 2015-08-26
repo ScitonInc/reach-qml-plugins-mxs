@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE bool setTime(int hour, int minutes, int seconds);
     Q_INVOKABLE QString execute(QString command, QStringList args);
     Q_INVOKABLE QString execute(QString command);
+    Q_INVOKABLE QString shell(QString command);
 
 private slots:
     bool setHwClock(void);
