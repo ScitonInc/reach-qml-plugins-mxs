@@ -12,10 +12,11 @@
 #include "sqlite.h"
 #include "upgrade.h"
 #include <QtDeclarative>
+#include <QDebug>
 
 void SystemPlugin::registerTypes(const char *uri)
 {
-    Q_ASSERT(uri == QLatin1String("com.reachtech.systemplugin"));
+    Q_ASSERT(uri == QLatin1String(".application.plugins"));
     qmlRegisterType<System>(uri, 1, 0, "System");
     qmlRegisterType<Beeper>(uri, 1, 0, "Beeper");
     qmlRegisterType<Backlight>(uri, 1, 0, "Backlight");
@@ -28,7 +29,7 @@ void SystemPlugin::registerTypes(const char *uri)
     qmlRegisterType<GPIOPinOutput>(uri, 1, 0, "GPIOPinOutput");
     qmlRegisterType<GPIOPinsInput>(uri, 1, 0, "GPIOPinsInput");
     qmlRegisterType<GPIOPinsOutput>(uri, 1, 0, "GPIOPinsOutput");
-    qmlRegisterType<sqlite>(uri, 1, 0, "SqLite");
+    qmlRegisterType<SqLite>(uri, 1, 0, "SqLite");
     qmlRegisterType<Upgrade>(uri, 1, 0, "Upgrade");
 }
 

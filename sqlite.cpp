@@ -1,8 +1,6 @@
 #include "sqlite.h"
 
-#include <qdeclarative.h>
-
-sqlite::sqlite(QDeclarativeItem *parent):
+SqLite::SqLite(QDeclarativeItem *parent):
     QDeclarativeItem(parent)
 {
     // By default, QDeclarativeItem does not draw anything. If you subclass
@@ -10,14 +8,15 @@ sqlite::sqlite(QDeclarativeItem *parent):
     // following line:
     
     // setFlag(ItemHasNoContents, false);
+    backUpFlag = false;
 }
 
-sqlite::~sqlite()
+SqLite::~SqLite()
 {
 
 }
 
-bool sqlite::openDB()
+bool SqLite::openDB()
 {
     bool ret = false;
     //Check if we need to restore the DB
@@ -39,15 +38,12 @@ bool sqlite::openDB()
     ret = db->open();
 
     //test if the database is not corrupted
-
     QSqlQuery* query = new QSqlQuery(db->database("reach_connection"));
     query->exec("select sqlite_version()");
 
     if (ret && query->next())
     {
-        //Create settings table if it does not exist
         qDebug() << "Sqlite database open: " << path;
-        //ret = createSettingsTable();
     }
     else
     {
@@ -59,59 +55,7 @@ bool sqlite::openDB()
     return ret;
 }
 
-bool sqlite::createSettingsTable()
-{
-    bool ret = false;
-    if (db->isOpen())
-    {
-        {
-            QSqlQuery* query = new QSqlQuery(db->database("reach_connection"));
-            ret = query->exec("CREATE TABLE IF NOT EXISTS settings(setting TEXT UNIQUE, value TEXT)");
-            query->finish();
-            delete query;
-        }
-    }
-    return ret;
-}
-
-
-bool sqlite::setSetting(QString setting, QString value)
-{
-    bool ret = false;
-    if (db->isOpen())
-    {
-        {
-            QSqlQuery* query = new QSqlQuery(db->database("reach_connection"));
-            query->prepare("INSERT OR REPLACE INTO settings VALUES (?,?)");
-            query->addBindValue(setting);
-            query->addBindValue(value);
-            ret = query->exec();
-            delete query;
-            backUpFlag = true;
-        }
-    }
-    return ret;
-}
-
-QString sqlite::getSetting(QString setting)
-{
-    QString ret = "";
-    if (db->isOpen())
-    {
-        {
-            QSqlQuery* query = new QSqlQuery(db->database("reach_connection"));
-            query->prepare("SELECT value FROM settings WHERE setting=?");
-            query->addBindValue(setting);
-            query->exec();
-            if (query->next())
-                ret = query->value(0).toString();
-            delete query;
-        }
-    }
-    return ret;
-}
-
-QVariantList sqlite::getRows(QString sql)
+QVariantList SqLite::getRows(QString sql)
 {
     QVariantList rows;
     if (db->isOpen())
@@ -136,7 +80,7 @@ QVariantList sqlite::getRows(QString sql)
     return rows;
 }
 
-int sqlite::execSql(QString sql)
+int SqLite::execSql(QString sql)
 {
     int ret = 0;
     if (db->isOpen())
@@ -154,7 +98,7 @@ int sqlite::execSql(QString sql)
 }
 
 
-int sqlite::execSql(QString sql, QStringList arguments)
+int SqLite::execSql(QString sql, QStringList arguments)
 {
     int ret = 0;
     if (db->isOpen())
@@ -177,21 +121,28 @@ int sqlite::execSql(QString sql, QStringList arguments)
     return ret;
 }
 
-QString sqlite::lastError()
+QString SqLite::lastError()
 {
     // If opening database has failed user can ask
     // error description by QSqlError::text()
     return db->lastError().text();
 }
 
-void sqlite::closeDB()
+void SqLite::closeDB()
 {
+    QProcess p(this);
+    QString cmd(SYNC_CMD);
+
     if (db->isOpen())
     {
         // Close and backup database
         if (backUpFlag)
             backupDB();
         db->close();
+
+        /* call sync to flush disk cache */
+        p.start(cmd);
+        p.waitForFinished(1000);
         delete db;
         QStringList list = QSqlDatabase::connectionNames();
         for(int i = 0; i < list.count(); ++i) {
@@ -201,7 +152,7 @@ void sqlite::closeDB()
     }
 }
 
-void sqlite::backupDB()
+void SqLite::backupDB()
 {
     if (db->isOpen())
     {
@@ -231,7 +182,7 @@ void sqlite::backupDB()
     }
 }
 
-bool sqlite::restoreDB()
+bool SqLite::restoreDB()
 {
     bool ret = false;
     QString source(DATABASE_PATH);
